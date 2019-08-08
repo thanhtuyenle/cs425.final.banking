@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master-layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="author" content="O. Kalu">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/cerulean/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EmRcsPP774S9MOi4ywB+JXUWjYnBdyInMzG2XsC5siZEUpexqxOMJW358dCYEjPu" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/master.css}">
+    <title>eBanking - a demo spring boot webapp featuring CRUD - List Customers</title>
+</head>
+<body>
+
+    <th:block layout:fragment="content">
+        <div>
+            <span style="font-size: 2em; color: #32a5e7;">Customers in our Collection</span><br/>
+
+            <span style="float:right;">
+                <a class="btn btn-outline-success btn-lg" href="/banking/customer/new">Add New Customer</a>
+            </span>
+        </div>
+        <!-- Search panel -->
+        <form id="searchCustomerForm" method="get" action="/banking/customer/search">
+            <div style="margin-top:1em;" class="row">
+                <div class="col-md-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="searchString" name="searchString" placeholder="Enter a string to search for customers" th:value="${searchString}" autofocus />
+                        <div class="input-group-append">
+                            <button id="btnSubmit" type="submit" class="btn btn-outline-success">Search</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <p>&nbsp;</p>
+        <div style="font-size: 1em">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Customer Number</th>
+                    <th scope="col">First Name</th>
+                    <th scope="col">Middle Name</th>
+                    <th scope="col">Last Name</th>
+                    <th scope="col">Email Address</th>
+                    <th scope="col">Phone Number</th>
+                    <th scope="col">Date of Birth</th>
+                    <th scope="col">&nbsp;</th>
+                    <th scope="col">&nbsp;</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="customer,iterStat : ${customers}">
+                    <th scope="row" th:text="${iterStat.count}"></th>
+                    <td th:text="${customer.customerNumber}"></td>
+                    <td th:text="${customer.firstName}"></td>
+                    <td th:text="${customer.middleName}"></td>
+                    <td th:text="${customer.lastName}"></td>
+                    <td th:text="${customer.emailAddress}"></td>
+                    <td th:text="${customer.contactPhoneNumber}"></td>
+                    <td th:text="${customer.dateOfBirth}"></td>
+                    <td></td>
+                    <td><a th:href="@{'/banking/customer/edit/{customerId}'(customerId=${customer.customerId})}">Edit</a></td>
+                    <td>
+                        <a data-toggle="modal" data-target="#confirmDeleteCustomerModal" th:href="@{'/banking/customer/delete/' + ${customer.customerId}}"
+                           th:attr="data-target='#confirmDeleteCustomerModal'+${customer.customerId}">
+                                            <span class="glyphicon glyphicon-trash" data-toggle="tooltip"
+                                                  data-placement="top" title="Delete"></span>Delete</a>
+                    </td>
+
+                    <!-- Modal -->
+                    <!-- <div class="modal fade" id="confirmDeleteCustomerModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true"> -->
+                    <div class="modal fade confirmDeleteCustomerModal" th:id="confirmDeleteCustomerModal+${customer.customerId}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalCenterTitle">Confirm Delete</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you wish to delete this customer data?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                                    <a th:href="@{'/banking/customer/delete/' + ${customer.customerId}}">
+                                        <button type="button" class="btn btn-primary">Yes</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </tr>
+                <tr th:if="${customersCount < 1}">
+                    <td colspan="8" th:align="center">No customers found</td>
+                </tr>
+                </tbody>
+            </table>
+
+            <!-- Pagination -->
+            <div>
+                <ul th:if="${customersCount >= 1}" class="pagination">
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#">Pages: </a>
+                    </li>
+                    <li th:each="i : ${#numbers.sequence(1, customers.totalPages)}"
+                        th:class="${currentPageNo}==${i-1}?'page-item active':'page-item'">
+                        <a th:href="@{/banking/customer/list(pageno=${i-1})}"
+                           th:text="${i}" class="page-link"></a>
+                    </li>
+                </ul>
+            </div>
+
+        </div>
+    </th:block>
+
+</body>
+</html>
