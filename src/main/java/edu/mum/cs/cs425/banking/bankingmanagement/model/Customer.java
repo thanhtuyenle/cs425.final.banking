@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 @Entity
-@Table(name ="students")
+@Table(name ="customers")
 public class Customer {
 
     @Id

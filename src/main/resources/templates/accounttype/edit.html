@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/master-layout}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="description" content="">
+    <meta name="author" content="O. Kalu">
+    <link rel="icon" href="favicon.ico">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.1.2/cerulean/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EmRcsPP774S9MOi4ywB+JXUWjYnBdyInMzG2XsC5siZEUpexqxOMJW358dCYEjPu" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/master.css}">
+    <title>eBanking - a demo spring boot webapp featuring CRUD - Edit Account Type Form</title>
+</head>
+<body>
+
+    <th:block layout:fragment="content">
+        <div style="margin-bottom: 1em;">
+            <span style="font-size: 2em; color: #32a5e7;">Edit Account Type data with Account Type Number: [[${accountType.accountTypeId}]]</span>
+        </div>
+
+        <form id="editAccountTypeForm" method="post" action="/banking/accounttype/edit" th:object="${accountType}">
+            <fieldset>
+                <input type="hidden" name="accountTypeId" th:value="${accountType.accountTypeId}"/>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="accountTypeName">Account Type Name</label>
+                            <span th:if="${#fields.hasErrors('accountTypeName')}" th:errors="*{accountTypeName}"
+                                  class="alert alert-danger" required="required"></span>
+                            <input id="accountTypeName" name="accountTypeName" type="text" class="form-control"
+                                   th:value="${accountType.accountTypeName}">
+                        </div>
+                    </div>
+                </div>
+                <div style="float:right;">
+                    <a href="/banking/accounttype/list" class="btn btn-outline-warning">Cancel</a>&nbsp;&nbsp;&nbsp;
+                    <button id="btnSubmit" type="submit" class="btn btn-outline-success">Update Account Type</button>
+                </div>
+            </fieldset>
+        </form>
+    </th:block>
+
+</body>
+</html>

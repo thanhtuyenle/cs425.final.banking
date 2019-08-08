@@ -35,13 +35,13 @@ public class CustomerController {
     }
 
     @GetMapping(value = {"/banking/customer/new"})
-    public String displayNewStudentForm(Model model) {
+    public String displayNewCustomerForm(Model model) {
         model.addAttribute("customer", new Customer());
         return "customer/new";
     }
 
     @PostMapping(value = {"/banking/customer/new"})
-    public String addNewStudent(@Valid @ModelAttribute("customer") Customer customer,
+    public String addNewCustomer(@Valid @ModelAttribute("customer") Customer customer,
                              BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             model.addAttribute("errors", bindingResult.getAllErrors());
@@ -73,7 +73,7 @@ public class CustomerController {
     }
 
     @GetMapping(value = {"/banking/customer/delete/{customerId}"})
-    public String deleteStudent(@PathVariable Long customerId, Model model) {
+    public String deleteCustomer(@PathVariable Long customerId, Model model) {
         customerService.deleteCustomerById(customerId);
         return "redirect:/banking/customer/list";
     }

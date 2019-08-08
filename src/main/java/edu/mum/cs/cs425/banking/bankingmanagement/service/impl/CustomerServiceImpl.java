@@ -30,12 +30,12 @@ public class CustomerServiceImpl implements CustomerService {
 //                .stream()
 //                .sorted(Comparator.comparing(Book::getTitle))
 //                .collect(Collectors.toList());
-        return repository.findAll(Sort.by("customerNumber"));
+        return repository.findAll(Sort.by("lastName"));
     }
 
     @Override
     public Page<Customer> getAllCustomersPaged(int pageNo) {
-        return repository.findAll(PageRequest.of(pageNo, 3, Sort.by("customerNumber")));
+        return repository.findAll(PageRequest.of(pageNo, 3, Sort.by("lastName")));
     }
 
     @Override
@@ -63,12 +63,12 @@ public class CustomerServiceImpl implements CustomerService {
     public Page<Customer> searchCustomers(String searchString, int pageNo) {
 
         if(isDate(searchString)) {
-            return repository.findAllByDateOfBirthEquals(LocalDate.parse(searchString, DateTimeFormatter.ISO_DATE), PageRequest.of(pageNo, 3, Sort.by("customerNumber")));
+            return repository.findAllByDateOfBirthEquals(LocalDate.parse(searchString, DateTimeFormatter.ISO_DATE), PageRequest.of(pageNo, 3, Sort.by("lastName")));
         }else if(isValidEmail(searchString)){
-            return repository.findAllByEmailAddressEquals(searchString, PageRequest.of(pageNo, 3, Sort.by("customerNumber")));
+            return repository.findAllByEmailAddressEquals(searchString, PageRequest.of(pageNo, 3, Sort.by("lastName")));
         }
         else {
-            return repository.findAllByCustomerNumberContainingOrFirstNameContainingOrMiddleNameContainingOrLastNameContainingOrContactPhoneNumberContaining(searchString, searchString, searchString, searchString, searchString, PageRequest.of(pageNo, 3, Sort.by("customerNumber")));
+            return repository.findAllByCustomerNumberContainingOrFirstNameContainingOrMiddleNameContainingOrLastNameContainingOrContactPhoneNumberContaining(searchString, searchString, searchString, searchString, searchString, PageRequest.of(pageNo, 3, Sort.by("lastName")));
         }
 
 
